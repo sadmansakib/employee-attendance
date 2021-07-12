@@ -72,7 +72,22 @@ class ApiAuthController extends Controller
         return response()->json([], 204);
     }
 
-    public function getTokenAndRefreshToken(Request $request, $email) {
+    public function refresh(Request $request){
+        $params = [
+            'grant_type' => 'refresh_token',
+            'client_id' => $this -> client -> id,
+            'client_secret' => $this -> client->secret,
+            'scope' => '*',
+        ];
+
+        $request->request->add($params);
+
+        $proxy = Request::create('oauth/token', 'POST');
+
+        return Route::dispatch($proxy);
+    }
+
+    private function getTokenAndRefreshToken(Request $request, $email) {
         $params = [
             'grant_type' => 'password',
             'client_id' => $this -> client -> id,
