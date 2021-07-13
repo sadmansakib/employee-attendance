@@ -21,5 +21,6 @@ Route::group(['prefix'=>'v1','middleware' => ['cors','json.response']], function
 
     Route::middleware('auth:api')->group(function (){
         Route::post('logout', 'Auth\ApiAuthController@logout')->name('logout.api');
+        Route::post('attend','Attendance\AttendanceController@give_attendance')->name('attendance.api');
     });
 });
