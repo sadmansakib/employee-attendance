@@ -19,6 +19,13 @@ class AttendanceController extends Controller
         if ($validation->fails()){
             return response()->json($validation->errors(),400);
         }
+
+        if(Attendance::where('attending_date',$request-> attending_date)
+            -> where('user_id',Auth::id())
+            -> first()){
+            return response()->json(['error'=>'attendance already recorded']);
+        }
+
         $attendance = new Attendance;
         $attendance->attending_date = $request -> attending_date;
         $attendance->is_present = true;
