@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Role;
-use GuzzleHttp\Client;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
@@ -18,9 +17,11 @@ use Laravel\Passport\Client as OClient;
 class ApiAuthController extends Controller
 {
     private $client;
+    private $userRepository;
 
-    public function __construct(){
-        $this -> client = OClient::where('password_client', 1)->first();
+    public function __construct(UserRepositoryInterface $userRepository){
+        $this->client = OClient::where('password_client', 1)->first();
+        $this->userRepository = $userRepository;
     }
 
     public function register (Request $request) {
@@ -34,32 +35,26 @@ class ApiAuthController extends Controller
         {
             return response(['errors'=>$validator->errors()->all()], 422);
         }
-//        $request['password']=Hash::make($request['password']);
-//        $request['remember_token'] = Str::random(10);
-        $user = User::create([
+        $user = $this->userRepository->create([
             'name' => $request -> name,
             'email'=> $request-> email,
             'phone'=> $request -> phone,
-           'password' => Hash::make($request ->password),
+            'password' => Hash::make($request ->password),
+            'type'=>$request-> role,
         ]);
-        $user->role()-> save(new Role(['type'=>$request-> role]));
 
-        Log::debug('User created');
-//        $token = $user->createToken('authToken')->accessToken;
-//        $response = ['token' => $token];
-//        return response($response);
-        return $this->getTokenAndRefreshToken($request, $request->email);
+        return $this->getTokenAndRefreshToken($request, $user->email);
     }
 
     public function login (Request $request) {
        if (Auth::attempt(['email' => $request->email, 'password'=>$request->password])){
-           $user = User::where('email', $request->email)->first();
+           $user = $this->userRepository->getUser($request->email);
            return $this->getTokenAndRefreshToken($request, $user->email);
        }
         return response()->json(['error'=>'Unauthorised'], 401);
     }
 
-    public function logout (Request $request) {
+    public function logout () {
         $accessToken = Auth::user()->token();
 
         DB::table('oauth_refresh_tokens')
