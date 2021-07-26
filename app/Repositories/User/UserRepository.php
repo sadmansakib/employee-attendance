@@ -8,7 +8,6 @@ use App\Repositories\BaseRepository;
 use App\Role;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
 
 class UserRepository extends BaseRepository implements UserRepositoryInterface
 {
@@ -33,6 +32,6 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function getUser(string $email): ?User
     {
-        return $this->model->where('email',$email)->first();
+        return $this->model->where('email', $email)->first();
     }
 }

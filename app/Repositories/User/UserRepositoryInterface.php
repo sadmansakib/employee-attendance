@@ -4,10 +4,10 @@
 namespace App\Repositories\User;
 
 
-use App\User;
 use App\Repositories\RepositoryInterface;
+use App\User;
 
 interface UserRepositoryInterface extends RepositoryInterface
 {
-    public function getUser(string $email) :?User;
+    public function getUser(string $email): ?User;
 }

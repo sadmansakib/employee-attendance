@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -39,11 +39,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function attendances(){
+    public function attendances()
+    {
         return $this->hasMany('App\Attendance');
     }
 
-    public function role(){
+    public function role()
+    {
         return $this->hasOne('App\Role');
     }
 }

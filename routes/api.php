@@ -13,13 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['prefix'=>'v1','middleware' => ['cors','json.response']], function (){
+Route::group(['prefix' => 'v1', 'middleware' => ['cors', 'json.response']], function () {
     Route::post('login', 'Auth\ApiAuthController@login')->name('login.api');
-    Route::post('register','Auth\ApiAuthController@register')->name('register.api');
-    Route::post('token/refresh','Auth\ApiAuthController@refresh')->name('refresh.api');
+    Route::post('register', 'Auth\ApiAuthController@register')->name('register.api');
+    Route::post('token/refresh', 'Auth\ApiAuthController@refresh')->name('refresh.api');
 
-    Route::middleware('auth:api')->group(function (){
+    Route::middleware('auth:api')->group(function () {
         Route::get('logout', 'Auth\ApiAuthController@logout')->name('logout.api');
-        Route::post('attend','Attendance\AttendanceController@give_attendance')->name('attendance.api');
+        Route::post('attend', 'Attendance\AttendanceController@giveAttendance')->name('attendance.api');
     });
 });
