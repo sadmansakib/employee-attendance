@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositories\Attendance\AttendanceRepository;
+use App\Repositories\Attendance\AttendanceRepositoryInterface;
 use App\Repositories\BaseRepository;
 use App\Repositories\RepositoryInterface;
 use App\Repositories\User\UserRepository;
@@ -17,8 +19,9 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(RepositoryInterface::class,BaseRepository::class);
-        $this->app->bind(UserRepositoryInterface::class,UserRepository::class);
+        $this->app->bind(RepositoryInterface::class, BaseRepository::class);
+        $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(AttendanceRepositoryInterface::class, AttendanceRepository::class);
     }
 
     /**

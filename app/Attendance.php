@@ -14,10 +14,11 @@ use Illuminate\Database\Eloquent\Model;
 class Attendance extends Model
 {
     protected $fillable = [
-        'attending_date','signin_time','is_present','is_late',
+        'attending_date', 'signin_time', 'is_present', 'is_late', 'user_id'
     ];
 
-    public function employees(){
+    public function employees()
+    {
         return $this->belongsToMany('App\User');
     }
 }
