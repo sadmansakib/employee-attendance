@@ -68,7 +68,7 @@ class ApiAuthController extends Controller
             $user = $this->userRepository->getUser($request->email);
             return $this->getTokenAndRefreshToken($request, $user->email);
         }
-        return response()->json(['error' => 'Unauthorised'], 401);
+        return response()->json(['error' => 'Invalid login credentials'], 401);
     }
 
     public function logout()

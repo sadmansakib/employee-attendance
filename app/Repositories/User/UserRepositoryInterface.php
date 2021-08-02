@@ -10,4 +10,5 @@ use App\User;
 interface UserRepositoryInterface extends RepositoryInterface
 {
     public function getUser(string $email): ?User;
+    public function getUserByID($id): ?User;
 }

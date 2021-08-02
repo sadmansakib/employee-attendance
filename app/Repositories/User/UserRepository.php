@@ -34,4 +34,9 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         return $this->model->where('email', $email)->first();
     }
+
+    public function getUserByID($id): ?User
+    {
+        return $this->model->where('id', $id)->with('role')->first();
+    }
 }
