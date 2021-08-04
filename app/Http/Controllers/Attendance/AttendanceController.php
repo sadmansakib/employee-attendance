@@ -20,7 +20,6 @@ class AttendanceController extends Controller
         $this->attendanceRepository = $attendanceRepository;
     }
 
-
     public function giveAttendance(Request $request)
     {
         $validation = Validator::make($request->all(), [
@@ -48,6 +47,17 @@ class AttendanceController extends Controller
         );
 
         return response()->json($attendance);
+    }
+
+    public function employeesPresentToday()
+    {
+        return response()->json($this->attendanceRepository
+            ->totalEmployeesPresent(date('Y-m-d')));
+    }
+
+    public function lateEmployeesPresentToday()
+    {
+        return response()->json($this->attendanceRepository->currentLateEmployees(date('Y-m-d')));
     }
 }
 

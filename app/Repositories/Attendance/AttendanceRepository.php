@@ -29,4 +29,14 @@ class AttendanceRepository extends BaseRepository implements AttendanceRepositor
             return false;
         }
     }
+
+    public function totalEmployeesPresent($date): int
+    {
+        return count($this->model::where('attending_date', $date)->get());
+    }
+
+    public function currentLateEmployees($date): int
+    {
+        return count($this->model::where('attending_date', $date)->where('is_late',true)->get());
+    }
 }

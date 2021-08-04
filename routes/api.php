@@ -19,8 +19,12 @@ Route::group(['prefix' => 'v1', 'middleware' => ['cors', 'json.response']], func
     Route::post('token/refresh', 'Auth\ApiAuthController@refresh')->name('refresh.api');
 
     Route::middleware('auth:api')->group(function () {
-        Route::get('profile','User\UserController@getEmployeeProfile')->name('employee.api');
+        Route::get('profile', 'User\UserController@getEmployeeProfile')->name('employee.api');
         Route::get('logout', 'Auth\ApiAuthController@logout')->name('logout.api');
         Route::post('attend', 'Attendance\AttendanceController@giveAttendance')->name('attendance.api');
+        Route::get('current_present', 'Attendance\AttendanceController@employeesPresentToday')
+            ->name('present_stat.api');
+        Route::get('late_employees','Attendance\AttendanceController@lateEmployeesPresentToday')
+            ->name('late_employees.api');
     });
 });
