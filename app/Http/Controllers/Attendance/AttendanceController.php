@@ -34,7 +34,7 @@ class AttendanceController extends Controller
         $userID = auth()->id();
 
         if ($this->attendanceRepository->checkAttendance($request->attending_date, $userID)) {
-            return response()->json(['error' => 'attendance already recorded']);
+            return response()->json(['error' => 'attendance already recorded'], 400);
         }
 
         $islate = strtotime($request->signin_time) > strtotime('8:45');
@@ -51,13 +51,14 @@ class AttendanceController extends Controller
 
     public function employeesPresentToday()
     {
-        return response()->json($this->attendanceRepository
-            ->totalEmployeesPresent(date('Y-m-d')));
+        return response()->json(['present' => $this->attendanceRepository
+            ->totalEmployeesPresent(date('Y-m-d'))]);
     }
 
     public function lateEmployeesPresentToday()
     {
-        return response()->json($this->attendanceRepository->currentLateEmployees(date('Y-m-d')));
+        return response()->json(['late' => $this->attendanceRepository
+            ->currentLateEmployees(date('Y-m-d'))]);
     }
 }
 
