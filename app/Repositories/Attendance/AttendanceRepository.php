@@ -22,12 +22,12 @@ class AttendanceRepository extends BaseRepository implements AttendanceRepositor
 
     public function checkAttendance($date, $userId): bool
     {
-        $attendance = $this->model::where('attending_date', $date)->where('user_id', $userId)->first();
-        if ($attendance) {
-            return true;
-        } else {
-            return false;
-        }
+        $attendance = $this->model::where([
+            ['attending_date', $date],
+            ['user_id', $userId]
+        ])->get(['is_present']);
+
+        return (bool)$attendance;
     }
 
     public function totalEmployeesPresent($date): int
@@ -37,6 +37,9 @@ class AttendanceRepository extends BaseRepository implements AttendanceRepositor
 
     public function currentLateEmployees($date): int
     {
-        return count($this->model::where('attending_date', $date)->where('is_late',true)->get());
+        return count($this->model::where([
+            ['attending_date', $date],
+            ['is_late', true]
+        ])->get());
     }
 }

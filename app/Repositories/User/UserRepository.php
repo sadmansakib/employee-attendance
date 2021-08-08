@@ -32,11 +32,18 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
 
     public function getUser(string $email): ?User
     {
-        return $this->model->where('email', $email)->first();
+        return $this->model
+            ->where('email', $email)
+            ->first(['email']);
     }
 
     public function getUserByID($id): ?User
     {
-        return $this->model->where('id', $id)->with('role')->first();
+        return $this->model
+            ->with([
+                'role' => function ($query) {
+                    $query->select('id','type','user_id');
+                }
+            ])->find($id, ['id', 'name', 'email', 'phone']);
     }
 }
