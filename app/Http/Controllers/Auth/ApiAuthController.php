@@ -81,7 +81,7 @@ class ApiAuthController extends Controller
 
         $accessToken->revoke();
 
-        return response()->json([], 204);
+        return response()->json(["message"=>"User has been successfully logged out"], 204);
     }
 
     public function refresh(Request $request)
