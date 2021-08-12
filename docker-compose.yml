@@ -1,0 +1,32 @@
+version: "3.9"
+services:
+  employee_attendance_api:
+    environment:
+      - DB_HOST=employee_attendance_db
+    volumes:
+      - .:/app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    links:
+      - employee_attendance_db
+    depends_on:
+      - employee_attendance_db
+    restart: on-failure
+    entrypoint: ['/app/wait-for','employee_attendance_db:3306','--','/app/start.sh']
+    command: ['/app/start.sh']
+  employee_attendance_db:
+    image: mysql:5.7.35
+    restart: on-failure
+    environment:
+      - MYSQL_ROOT_PASSWORD=genesis,154
+      - MYSQL_DATABASE=employee_attendance
+      - MYSQL_USER=sadman
+      - MYSQL_PASSWORD=genesis,154
+    ports:
+      - "3306:3306"
+
+
