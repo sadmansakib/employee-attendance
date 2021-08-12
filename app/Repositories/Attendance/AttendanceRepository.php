@@ -25,7 +25,7 @@ class AttendanceRepository extends BaseRepository implements AttendanceRepositor
         $attendance = $this->model::where([
             ['attending_date', $date],
             ['user_id', $userId]
-        ])->get(['is_present']);
+        ])->first();
 
         return (bool)$attendance;
     }
