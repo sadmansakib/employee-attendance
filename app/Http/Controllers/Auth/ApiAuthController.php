@@ -88,6 +88,7 @@ class ApiAuthController extends Controller
     {
         $params = [
             'grant_type' => 'refresh_token',
+            'refresh_token' => $request->refresh_token,
             'client_id' => $this->client->id,
             'client_secret' => $this->client->secret,
             'scope' => '*',
